@@ -1,5 +1,6 @@
 import os
 import shutil
+import traceback
 
 # Class handling the Organizing
 class FileOrganizer:
@@ -30,10 +31,15 @@ class FileOrganizer:
     # The folder entered by the user is processed here
     # Note : All the files in the specified folder are processed here without going into the child folders
     def organize_folder(self):
-        for root,dirs,files in os.walk(self.dir_path):
-            for file in files:
-                if root == self.dir_path:
-                    self.organize_file(os.path.join(root,file))
+        try:
+            for root,dirs,files in os.walk(self.dir_path):
+                for file in files:
+                    if root == self.dir_path:
+                        self.organize_file(os.path.join(root,file))
+        except Exception as e:
+            print(f'Exception Occured : {type(e).__name__}')
+            print(f'Exception Message : {e}')
+            traceback.print_exc()
 
     # To make sure none of the files that are sent to the organized folder repolaces the existing files.
     def get_unique_filename(self, target_file):
@@ -46,16 +52,21 @@ class FileOrganizer:
 
     # This is where moving occurs using shutil after generating a proper unique name to be moved into.
     def organize_file(self,file_path):
-        file_name = os.path.basename(file_path)
-        file_extension = os.path.splitext(file_name)[1].lower()
-        map_folder = self.folder_dictionary.get(file_extension, "Others")
+        try:
+            file_name = os.path.basename(file_path)
+            file_extension = os.path.splitext(file_name)[1].lower()
+            map_folder = self.folder_dictionary.get(file_extension, "Others")
 
-        target_directory = os.path.join(self.dir_path,map_folder)
-        os.makedirs(target_directory, exist_ok=True)
+            target_directory = os.path.join(self.dir_path,map_folder)
+            os.makedirs(target_directory, exist_ok=True)
 
-        dest_path = self.get_unique_filename(os.path.join(target_directory,file_name))
-        shutil.move(file_path,dest_path)
-        print(f"Moved file {file_path} to {dest_path}")
+            dest_path = self.get_unique_filename(os.path.join(target_directory,file_name))
+            shutil.move(file_path,dest_path)
+            print(f"Moved file {file_path} to {dest_path}")
+        except Exception as e:
+            print(f'Exception Occured : {type(e).__name__}')
+            print(f'Exception Message : {e}')
+            traceback.print_exc()
 
 if __name__ == '__main__':
 

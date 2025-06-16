@@ -5,6 +5,7 @@ What It Does
 2. Moves files into categorized subfolders (like Images, Documents, Videos, etc.).
 3. Prevents accidental overwrites by ensuring unique filenames during the move.
 4. Supports a wide range of file extensions and gracefully handles unknown types by placing them into an Others folder.
+5. Exception handling implemented with traceback module.
 
 How It Works
 1. The script prompts the user to enter a target directory.
